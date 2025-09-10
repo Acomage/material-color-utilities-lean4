@@ -1,0 +1,10 @@
+name = "mcu"
+version = "0.1.0"
+defaultTargets = ["mcu"]
+
+[[lean_lib]]
+name = "Mcu"
+
+[[lean_exe]]
+name = "mcu"
+root = "Main"
