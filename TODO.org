@@ -14,12 +14,12 @@
     - [ ] dynamic_scheme
     - [ ] material_dynamic_colors
     - [ ] variant
-  - hct [0/3]
+  - hct [1/3]
     - src [0/1]
       - [ ] hct_solver
     - [ ] cam16
     - [ ] hct
-    - [ ] viewing_conditions
+    - [X] viewing_conditions
   - palettes [0/3]
     - [ ] core_palette
     - [ ] core_palettes
@@ -48,9 +48,9 @@
     - [ ] score
   - temperature [0/1]
     - [ ] temperature_cache
-  - utils [2/3]
+  - utils [3/3]
     - [X] color_utils
     - [X] math_utils
-    - [ ] string_utils
+    - [X] string_utils
 - [ ] add cli
 - [ ] refactor
