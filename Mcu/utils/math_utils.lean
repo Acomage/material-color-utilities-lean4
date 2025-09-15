@@ -1,5 +1,9 @@
 namespace utils.math_utils
 
+def pi : Float := 2 * Float.acos 0
+
+def max (a b : Float) : Float := if a > b then a else b
+
 def signum (num : Float) : Int :=
   if num < 0 then -1 else if num == 0 then 0 else 1
 

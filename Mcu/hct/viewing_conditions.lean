@@ -28,15 +28,13 @@ structure viewing_conditions where
 
 namespace viewing_conditions
 
-def pi : Float := 2 * Float.acos 0
-
 def make (whitePoint : Vector Float 3 := utils.color_utils.whitePointD65 ())
   (adaptingLuminance : Float := -1.0)
   (backgroundLstar : Float := 50.0)
   (surround : Float := 2.0)
   (discountingIlluminant : Bool := false) : viewing_conditions :=
   let adaptingLuminance := if adaptingLuminance > 0.0 then adaptingLuminance
-    else 200.0 / pi * (utils.color_utils.yFromLstar 50) / 100
+    else 200.0 / utils.math_utils.pi * (utils.color_utils.yFromLstar 50) / 100
   let backgroundLstar := max 0.1 backgroundLstar
   let xyz := whitePoint
   let rW := xyz[0] * 0.401288 + xyz[1] * 0.650173 + xyz[2] * -0.051461
