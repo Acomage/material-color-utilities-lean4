@@ -3,7 +3,7 @@ import Mcu.utils.math_utils
 import Mcu.hct.cam16
 import Mcu.hct.viewing_conditions
 
-namespace hct.hct_solver
+namespace HctSolver
 
 def _scaledDiscountFromLinrgb :=
   #v[#v[0.001200833568784504, 0.002389694492170889, 0.0002795742885861124],
@@ -277,7 +277,7 @@ def _criticalPlanes :=
     99.55452497210776]
 
 def _sanitizeRadians (angle : Float) : Float :=
-  (angle + utils.math_utils.pi * 8) % (utils.math_utils.pi * 2)
+  (angle + MathUtils.pi * 8) % (MathUtils.pi * 2)
 
 def _trueDelinearized (rgbComponent : Float) : Float :=
   let normalized := rgbComponent / 100.0
@@ -290,10 +290,10 @@ def _trueDelinearized (rgbComponent : Float) : Float :=
 
 def _chromaticAdaptation (component : Float) : Float :=
   let af := component.abs ^ 0.42
-  Float.ofInt (utils.math_utils.signum component) * 400.0 * af / (af + 27.13)
+  Float.ofInt (MathUtils.signum component) * 400.0 * af / (af + 27.13)
 
 def _hueOf (linrgb : Vector Float 3) : Float :=
-  let scaledDiscount := utils.math_utils.matrixMultiply linrgb _scaledDiscountFromLinrgb
+  let scaledDiscount := MathUtils.matrixMultiply linrgb _scaledDiscountFromLinrgb
   let rA := _chromaticAdaptation scaledDiscount[0]
   let gA := _chromaticAdaptation scaledDiscount[1]
   let bA := _chromaticAdaptation scaledDiscount[2]
@@ -427,12 +427,12 @@ def _bisectToLimit (y targetHue : Float) : Vector Float 3 := Id.run do
 
 def _inverseChromaticAdaptation (adapted : Float) : Float :=
   let adaptedAbs := adapted.abs
-  let base := utils.math_utils.max 0 (27.13 * adaptedAbs / (400.0 - adaptedAbs))
-  Float.ofInt (utils.math_utils.signum adapted) * (base ^ (1 / 0.42))
+  let base := MathUtils.max 0 (27.13 * adaptedAbs / (400.0 - adaptedAbs))
+  Float.ofInt (MathUtils.signum adapted) * (base ^ (1 / 0.42))
 
 def _findResultByJ (hueRadians chroma y : Float) : Int := Id.run do
   let mut j := y.sqrt * 11.0
-  let viewingconditions := viewing_conditions.standard
+  let viewingconditions := ViewingConditions.standard
   let tInnerCoeff := 1 / (1.64 - (0.29 ^ viewingconditions.backgroundYTowhitePointY)^0.73)
   let eHue := 0.25 * (Float.cos (hueRadians + 2.0) + 3.8)
   let p1 := eHue * (50000.0 / 13.0) * viewingconditions.nC * viewingconditions.ncb
@@ -453,7 +453,7 @@ def _findResultByJ (hueRadians chroma y : Float) : Int := Id.run do
     let rCSaled := _inverseChromaticAdaptation rA
     let gCSaled := _inverseChromaticAdaptation gA
     let bCSaled := _inverseChromaticAdaptation bA
-    let linrgb := utils.math_utils.matrixMultiply #v[rCSaled, gCSaled, bCSaled] _linrgbFromScaledDiscount
+    let linrgb := MathUtils.matrixMultiply #v[rCSaled, gCSaled, bCSaled] _linrgbFromScaledDiscount
     if linrgb[0] < 0.0 || linrgb[1] < 0.0 || linrgb[2] < 0.0 then
       return 0
     let kR := _yFromLinrgb[0]
@@ -465,25 +465,25 @@ def _findResultByJ (hueRadians chroma y : Float) : Int := Id.run do
     if iterationRound == 4 || (fnj - y).abs < 0.002 then
       if linrgb[0] > 100.01 || linrgb[1] > 100.01 || linrgb[2] > 100.01 then
         return 0
-      return utils.color_utils.argbFromLinrgb linrgb
+      return ColorUtils.argbFromLinrgb linrgb
     j := j - (fnj - y) * j / (2 * fnj)
   return 0
 
 def solveToInt (hueDegrees chroma lstar : Float) : Int :=
   if chroma < 0.0001 || lstar < 0.0001 || lstar > 99.9999 then
-    utils.color_utils.argbFromLstar lstar
+    ColorUtils.argbFromLstar lstar
   else
-    let hueDegrees := utils.math_utils.sanitizeDegreesDouble hueDegrees
-    let hueRadians := hueDegrees * utils.math_utils.pi / 180.0
-    let y := utils.color_utils.yFromLstar lstar
+    let hueDegrees := MathUtils.sanitizeDegreesDouble hueDegrees
+    let hueRadians := hueDegrees * MathUtils.pi / 180.0
+    let y := ColorUtils.yFromLstar lstar
     let exactAnswer := _findResultByJ hueRadians chroma y
     if exactAnswer != 0 then
       exactAnswer
     else
       let linrgb := _bisectToLimit y hueRadians
-      utils.color_utils.argbFromLinrgb linrgb
+      ColorUtils.argbFromLinrgb linrgb
 
-def solveToCam (hueDegrees chroma lstar : Float) : cam16 :=
-  cam16.fromInt (solveToInt hueDegrees chroma lstar)
+def solveToCam (hueDegrees chroma lstar : Float) : Cam16 :=
+  Cam16.fromInt (solveToInt hueDegrees chroma lstar)
 
-end hct.hct_solver
+end HctSolver

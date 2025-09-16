@@ -1,6 +1,6 @@
 import Mcu.utils.math_utils
 
-namespace utils.color_utils
+namespace ColorUtils
 
 def _srgbToXyz : Vector (Vector Float 3) 3 :=
   #v[#v[0.41233895, 0.35762064, 0.18051042],
@@ -31,7 +31,7 @@ def delinearized (rgbComponent : Float) : Int :=
       normalized * 12.92
     else
       1.055 * (normalized ^ (1 / 2.4)) - 0.055
-  utils.math_utils.clampInt 0 255 (delinearizedValue * 255.0).toInt64.toInt
+  MathUtils.clampInt 0 255 (delinearizedValue * 255.0).toInt64.toInt
 
 def argbFromLinrgb (linrgb : Vector Float 3) : Int :=
   let r := delinearized linrgb[0]
@@ -68,7 +68,7 @@ def xyzFromArgb (argb : Int) : Vector Float 3 :=
   let r := linearized (redFromArgb argb)
   let g := linearized (greenFromArgb argb)
   let b := linearized (blueFromArgb argb)
-  utils.math_utils.matrixMultiply #v[r, g, b] _srgbToXyz
+  MathUtils.matrixMultiply #v[r, g, b] _srgbToXyz
 
 def _labF (t : Float) : Float :=
   let e := 216.0 / 24389.0
@@ -138,4 +138,4 @@ def lstarFromArgb (argb : Int) : Float :=
 def whitePointD65 : Unit → Vector Float 3 :=
   fun () => _whitePointD65
 
-end utils.color_utils
+end ColorUtils

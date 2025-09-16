@@ -1,4 +1,4 @@
-namespace utils.math_utils
+namespace MathUtils
 
 def pi : Float := 2 * Float.acos 0
 
@@ -37,4 +37,4 @@ def matrixMultiply (row : Vector Float 3) (matrix : Vector (Vector Float 3) 3) :
   let c := row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2]
   #v[a, b, c]
 
-end utils.math_utils
+end MathUtils

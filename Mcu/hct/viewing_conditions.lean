@@ -7,7 +7,7 @@ import Mcu.utils.math_utils
   I don't know if it is true now, but if there is some problem,
   I will change them to List<double> at that time
 -/
-structure viewing_conditions where
+structure ViewingConditions where
   white_point : Vector Float 3
   adaptingLuminance : Float
   backgroundLstar : Float
@@ -26,23 +26,23 @@ structure viewing_conditions where
   fLRoot : Float
   z : Float
 
-namespace viewing_conditions
+namespace ViewingConditions
 
-def make (whitePoint : Vector Float 3 := utils.color_utils.whitePointD65 ())
+def make (whitePoint : Vector Float 3 := ColorUtils.whitePointD65 ())
   (adaptingLuminance : Float := -1.0)
   (backgroundLstar : Float := 50.0)
   (surround : Float := 2.0)
-  (discountingIlluminant : Bool := false) : viewing_conditions :=
+  (discountingIlluminant : Bool := false) : ViewingConditions :=
   let adaptingLuminance := if adaptingLuminance > 0.0 then adaptingLuminance
-    else 200.0 / utils.math_utils.pi * (utils.color_utils.yFromLstar 50) / 100
+    else 200.0 / MathUtils.pi * (ColorUtils.yFromLstar 50) / 100
   let backgroundLstar := max 0.1 backgroundLstar
   let xyz := whitePoint
   let rW := xyz[0] * 0.401288 + xyz[1] * 0.650173 + xyz[2] * -0.051461
   let gW := xyz[0] * -0.250268 + xyz[1] * 1.204414 + xyz[2] * 0.045854
   let bW := xyz[0] * -0.002079 + xyz[1] * 0.048952 + xyz[2] * 0.953127
   let f := 0.8 + surround / 10.0
-  let c := if f >= 0.9 then utils.math_utils.lerp 0.59 0.69 (f - 0.9) * 10.0
-    else utils.math_utils.lerp 0.525 0.59 (f - 0.8) * 10.0
+  let c := if f >= 0.9 then MathUtils.lerp 0.59 0.69 (f - 0.9) * 10.0
+    else MathUtils.lerp 0.525 0.59 (f - 0.8) * 10.0
   let d := if discountingIlluminant then 1.0
     else f * (1.0 - ((1.0 / 3.6) * Float.exp ((-adaptingLuminance - 42) / 92.0)))
   let d:= if d > 1.0 then 1.0 else if d < 0.0 then 0.0 else d
@@ -56,7 +56,7 @@ def make (whitePoint : Vector Float 3 := utils.color_utils.whitePointD65 ())
   let fl :=
     (k4 * adaptingLuminance) +
     (0.1 * (k4F ^ 2) * ((5.0 * adaptingLuminance) ^ (1.0 / 3.0)))
-  let n := utils.color_utils.yFromLstar backgroundLstar / whitePoint[1]
+  let n := ColorUtils.yFromLstar backgroundLstar / whitePoint[1]
   let z := 1.48 + Float.sqrt n
   let nbb := 0.725 / (n ^ 0.2)
   let ncb := nbb
@@ -84,7 +84,7 @@ def make (whitePoint : Vector Float 3 := utils.color_utils.whitePointD65 ())
    fLRoot := fl ^ 0.25,
    z := z }
 
-def sRgb : viewing_conditions := make
-def standard : viewing_conditions := sRgb
+def sRgb : ViewingConditions := make
+def standard : ViewingConditions := sRgb
 
-end viewing_conditions
+end ViewingConditions
