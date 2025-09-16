@@ -6,14 +6,14 @@
     - [X] contrast
   - dislike [1/1]
     - [X] dislike_analyzer
-  - dynamiccolor [1/5]
+  - dynamiccolor [2/5]
     - src [1/2]
       - [X] contrast_curve
       - [ ] tone_delta_pair
     - [ ] dynamic_color
     - [ ] dynamic_scheme
     - [ ] material_dynamic_colors
-    - [ ] variant
+    - [X] variant
   - hct [4/4]
     - src [1/1]
       - [X] hct_solver
