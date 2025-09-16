@@ -14,11 +14,11 @@
     - [ ] dynamic_scheme
     - [ ] material_dynamic_colors
     - [ ] variant
-  - hct [3/4]
+  - hct [4/4]
     - src [1/1]
       - [X] hct_solver
     - [X] cam16
-    - [ ] hct
+    - [X] hct
     - [X] viewing_conditions
   - palettes [0/3]
     - [ ] core_palette
