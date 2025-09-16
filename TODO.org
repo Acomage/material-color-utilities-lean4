@@ -1,7 +1,7 @@
 * TODO rewrite material color utilities
-- rewirite all code [2/11]
-  - blend [0/1]
-    - [ ] blend
+- rewirite all code [3/11]
+  - blend [1/1]
+    - [X] blend
   - contrast [0/1]
     - [ ] contrast
   - dislike [0/1]
