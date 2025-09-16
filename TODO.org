@@ -1,14 +1,14 @@
 * TODO rewrite material color utilities
-- rewirite all code [5/11]
+- rewirite all code [6/11]
   - blend [1/1]
     - [X] blend
   - contrast [1/1]
     - [X] contrast
   - dislike [1/1]
     - [X] dislike_analyzer
-  - dynamiccolor [0/4]
-    - src [0/2]
-      - [ ] contrast_curve
+  - dynamiccolor [1/5]
+    - src [1/2]
+      - [X] contrast_curve
       - [ ] tone_delta_pair
     - [ ] dynamic_color
     - [ ] dynamic_scheme
